@@ -8,15 +8,21 @@ var master = gitgraph.branch({
   name:"master",
   showLabel: true
 });
+master.commit();
 
-gitgraph.commit();
+var production = master.branch({
+  color:"#f00",
+  name:"production",
+  showLabel: true
+});
+
 var release = master.branch({name: "releaseXX", showLabel:true});
 
 
 var feature1Color = "#ccc";
 var feature2Color = "#ccf";
 var feature3Color = "#f0f";
-var feature4Color = "#ff0";
+var hotfixColor = "#5f5";
 
 var myfeature1 = master.branch({
   color:feature1Color,
@@ -40,27 +46,20 @@ myfeature2.merge(release, {
 });
 
 
-var bugfix = release.branch({
-  color:feature3Color,
-  name:"bugfix1",
-  showLabel: true
-});
-bugfix.commit({color:feature3Color});
-
-
-bugfix.merge(release, "Bugfix1 merged in releaseXX");
-
-
-var bugfix2 = release.branch({
-  color:feature4Color,
-  name:"bugfix2",
-  showLabel: true
-});
-bugfix2.commit({color:feature4Color});
-
-
-bugfix2.merge(release, "Bugfix2 merged in releaseXX");
-
 release.merge(master, "Feature1 merged in master");
 
+release.merge(production, "Feature1 merged in production");
 
+
+
+var hotfix = production.branch({
+  color:hotfixColor,
+  name:"hotfix",
+  showLabel: true
+});
+hotfix.commit({color:hotfixColor});
+
+
+hotfix.merge(production, "hotfix merged in production");
+
+production.merge(master, "hotfix merged in production");
